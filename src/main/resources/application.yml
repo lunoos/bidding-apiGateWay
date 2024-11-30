@@ -1,0 +1,47 @@
+server:
+  port: 8088
+
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: vendorService
+        uri: lb://VENDOR
+        predicates:
+        - Path=/vendors/**
+      - id: authService
+        uri: lb://AUTH
+        predicates:
+        - Path=/auth/**
+      - id: productService
+        uri: lb://PRODUCT
+        predicates:
+        - Path=/products/**
+      - id: bidderService
+        uri: lb://BIDDER
+        predicates:
+        - Path=/bidding/**
+      - id: slotService
+        uri: lb://SLOT
+        predicates:
+        - Path=/auction-slots/**
+       
+            
+
+eureka:
+  instance:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway, health
+
